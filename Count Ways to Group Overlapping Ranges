@@ -1,0 +1,37 @@
+https://leetcode.com/problems/count-ways-to-group-overlapping-ranges/description/
+
+2580. Count Ways to Group Overlapping Ranges
+
+// Logic: Sort the ranges and merge the overlapping ranges. Then count number of non-overlapping ranges, ans -> 2^(count).
+
+class Solution {
+public:
+    int countWays(vector<vector<int>>& ranges) {
+        int mod=1e9+7;
+        sort(ranges.begin(), ranges.end());
+        
+        pair<int, int> mergedRanges;
+        vector<pair<int, int>> ans;
+        mergedRanges = make_pair(ranges[0][0], ranges[0][1]);
+        
+        for(auto it: ranges){
+            if(it[0]<=mergedRanges.second){
+                mergedRanges.second = max(it[1], mergedRanges.second);
+            }
+            else{
+                ans.push_back(mergedRanges);
+                pair<int, int> p;
+                p.first = it[0], p.second=it[1];
+                mergedRanges = p;
+            }
+        }
+        ans.push_back(mergedRanges);
+        
+        int res = ans.size();
+        int mul=1, var=1;
+        for(int i=1; i<=res; i++){
+            var = (var*2)%mod;
+        }
+        return (var)%mod;
+    }
+};
