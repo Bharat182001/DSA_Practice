@@ -39,3 +39,48 @@ public:
         return mini;
     }
 };
+
+// BFS Approach:
+class Solution {
+public:
+    int bfs(int node, vector<pair<int, int>> adj[], bool vis[], int end){
+        queue<int> q;
+        q.push(node);
+        vis[node] = true;
+        int mini = INT_MAX;
+        while(!q.empty()){
+            int siz = q.size();
+            while(siz--){
+                int node = q.front();
+                q.pop();
+
+
+                for(auto it: adj[node]){
+                    int nd = it.first;
+                    int dist = it.second;
+                    mini = min(mini, dist);
+                    if(!vis[nd]){
+                        vis[nd] = true;
+                        q.push(nd);
+                    }
+                }
+            }
+        }
+
+        return mini;
+    }
+    int minScore(int n, vector<vector<int>>& roads) {
+        //adjacency list creation
+        vector<pair<int, int>> adj[(int)1e5+2];
+        for(int i=0; i<roads.size(); i++){
+            int u = roads[i][0];
+            int v = roads[i][1];
+            int dis = roads[i][2];
+            adj[u].push_back({v, dis});
+            adj[v].push_back({u, dis});
+        }
+
+        bool visited[(int)1e5+2] = {false};
+        return bfs(1, adj, visited, n);
+    }
+};
