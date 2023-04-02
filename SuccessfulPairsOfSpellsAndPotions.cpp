@@ -1,7 +1,7 @@
 // https://leetcode.com/problems/successful-pairs-of-spells-and-potions/description/
 
 // Approach: sort the potions and then find least strength that will pair with current spell strength, then aage ke saare bna lenge pair
-// TC: O(nlogm), SC: O(1)
+// TC: O((n+m) * logm), SC: O(1)
 
 class Solution {
 public:
