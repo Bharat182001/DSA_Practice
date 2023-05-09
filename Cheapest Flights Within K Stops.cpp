@@ -1,23 +1,23 @@
 // https://leetcode.com/problems/cheapest-flights-within-k-stops/description/
 
-// Approach: Think on why we can't store on basis of distances(costs) and rather will be storing on basis of no. of stops in queue only(No need of taking priority_queue)
+// Approach: IMP => Queue would suffice for DJikstra's ALgo as we are storing on basis of steps, If we store acc to distances, then we might
+// update a particular cost[node] with less cost but with wrong no. of steps and later if we found path with shorter no. of nodes(k in limit
+// path), then we can't be able to choose that path, as we had already updated cost[node], so can't be able to push for that adjNode
 
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-        // TC: O(E), i.e O(flights.size())
-        //adj list:
-        unordered_map<int, vector<pair<int,int>>> adj;
+        unordered_map<int, vector<pair<int, int>> > adj;
         for(auto &it: flights) {
-            int u = it[0], v = it[1], cost = it[2];
+            int u=it[0], v=it[1], cost=it[2];
             adj[u].push_back({v, cost});
         }
 
-        vector<int> distance(n, INT_MAX);
-        distance[src]=0;
+        vector<int> cost(n, 1e9);
+        cost[src]=0;
 
-        // {stops, {node, dist}} 
-        queue<pair<int, pair<int, int>>> q;
+    // {stops, {node, dist}} => Go acc to this, not acc to distance (Must Do A Dry Run for That)!
+    queue< pair<int, pair<int, int>> > q;
         q.push({0, {src, 0}});
 
         while(!q.empty()) {
@@ -26,21 +26,22 @@ public:
 
             int stops = it.first;
             int node = it.second.first;
-            int cost = it.second.second;
+            int dist = it.second.second;
 
-            if(stops>k) continue;
+            if(stops > (k+1)) continue;
 
             for(auto &ng: adj[node]) {
                 int adjNode = ng.first;
-                int edgeWt = ng.second;
-                if(cost+edgeWt < distance[adjNode] && stops <= k) {
+                int price = ng.second;
+
+                if(dist + price < cost[adjNode] && stops < (k+1)) {
                     //update
-                    distance[adjNode] = cost+edgeWt;
-                    q.push({stops+1, {adjNode, distance[adjNode]}});
+                    cost[adjNode] = dist+price;
+                    q.push({stops+1, {adjNode, cost[adjNode]}});
                 }
             }
         }
 
-        return distance[dst] == INT_MAX ? -1 : distance[dst];
+        return cost[dst]==1e9 ? -1 : cost[dst];
     }
 };
