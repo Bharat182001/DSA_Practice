@@ -42,3 +42,27 @@ public:
         return dp[0][0];
     }
 };
+
+// Tabulation + Space Optimisation:
+class Solution {
+public:
+    int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+        // TC: O(n*m),SC: O(n*m) => SPace Optimised COde!
+        int n=nums1.size(), m=nums2.size();
+        vector<int> cur(m+1, 0), next(m+1, 0);
+
+        for(int i=n-1; i>=0; i--) {
+            for(int j=m-1; j>=0; j--) {
+                if(nums1[i]==nums2[j]) {
+                    cur[j] = 1 + next[j+1];
+                }
+                else {
+                    cur[j] = max(next[j], max(cur[j+1], next[j+1]));
+                }
+            }
+            next=cur;
+        }
+
+        return cur[0];
+    }
+};
