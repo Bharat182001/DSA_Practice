@@ -1,7 +1,7 @@
 // https://leetcode.com/problems/minimum-time-to-complete-trips/description/
 
 // 2187. Minimum Time to Complete Trips
-// LOGIC: brute is easy enough, optimised solution needs binary search and lower and upper limits are pretty much the cruz of problem.
+// LOGIC: brute is easy enough, optimised solution needs binary search and lower and upper limits are pretty much the crux of problem.
 
 class Solution {
 public:
